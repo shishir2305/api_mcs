@@ -33,8 +33,6 @@ async function connectToMongoDB() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-
-    console.log("Connected to MongoDB Atlas");
   } catch (error) {
     console.error("Error connecting to MongoDB Atlas:", error);
   }
@@ -51,10 +49,8 @@ async function CrudApi() {
     try {
       const newTask = new crudModel(req.body);
       await newTask.save();
-      console.log("Task Created Successfully");
     } catch (error) {
-      console.log("Error while creating task");
-      console.log(error);
+      console.log("Error while creating task", error);
       res.send("Error while creating task");
     }
     res.send("Task Created Successfully");
@@ -120,11 +116,14 @@ async function CrudApi() {
       await crudModel.deleteOne({ _id: req.body._id });
       console.log("Task Deleted Successfully");
     } catch (error) {
-      console.log("Error while deleting task");
-      console.log(error);
+      console.log("Error while deleting task", error);
       res.send("Error while deleting task");
     }
     res.send("Task Deleted Successfully");
+  });
+
+  app.get("/ping", (req, res) => {
+    res.send("pong");
   });
 
   app.listen(PORT, () => {
